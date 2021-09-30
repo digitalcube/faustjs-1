@@ -17,6 +17,7 @@ import { create as createPostHook } from './usePost';
 import { create as createPageHook } from './usePage';
 import { create as createPreviewHook, UsePreviewResponse } from './usePreview';
 import { create as createLoginHook } from './useLogin';
+import { create as createLogoutHook } from './useLogout';
 
 export type UseClient<
   Schema extends RequiredSchema,
@@ -57,6 +58,12 @@ interface WithAuthHooks<Schema extends RequiredSchema> {
       | true
       | { redirect?: string | undefined; login?: string | undefined }
       | undefined;
+  };
+
+  useLogout(): {
+    isLoading: boolean;
+    logout: () => Promise<void>;
+    isLoggedOut: boolean | undefined;
   };
 
   /**
@@ -201,5 +208,6 @@ export function createAuthHooks<
     usePage: createPageHook(useQuery),
     usePreview: createPreviewHook(useAuth, useQuery),
     useLogin: createLoginHook(useMutation),
+    useLogout: createLogoutHook(),
   };
 }

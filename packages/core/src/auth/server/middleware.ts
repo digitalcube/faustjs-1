@@ -75,3 +75,20 @@ export async function authorizeHandler(
     res.end(JSON.stringify({ error: 'Internal Server Error' }));
   }
 }
+
+/**
+ * A Node handler for processing incoming requests to logout an authenticated user.
+ * This handler clears the refresh token from the cookie and returns a response.
+ *
+ * @param {IncomingMessage} req
+ * @param {ServerResponse} res
+ *
+ * @see https://faustjs.org/docs/next/guides/auth
+ */
+export function logoutHandler(req: IncomingMessage, res: ServerResponse): void {
+  const oauth = new OAuth(new Cookies(req, res));
+  oauth.setRefreshToken(undefined);
+
+  res.statusCode = 205;
+  res.end();
+}
